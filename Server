@@ -1,0 +1,85 @@
+obj cube = {};
+bool healenabled = false;
+obj playerbackup = {};
+public action onNetworkMessage(str id, obj data, str playerID) {
+	str message = toStr data;
+	obj playerName = GAME.PLAYERS.findByID(playerID);
+	str playerNameStr = toStr playerName.username;
+	if (playerNameStr == "timmytheman123" || playerNameStr == "coasterm77"){
+		if (message == "-z") {
+			(num) playerName.position.z -= 30;
+		} else if (message == "-x"){
+			(num) playerName.position.x -= 30;
+		} else if (message == "+z"){
+			(num) playerName.position.z += 30;
+		} else if (message == "+x"){
+			(num) playerName.position.x += 30;
+		} else if (message == "+y"){
+			(num) playerName.position.y += 60;
+		} else if (message == "-y"){
+			(num) playerName.position.y -= 10;
+		} else if (message == "H"){
+			GAME.NETWORK.send("move","Toggle", playerID);
+		}
+	}
+}
+#happens when someone chats
+public action onChatMessage(str msg, str playerID){
+	#check username for whitelist
+    obj player = GAME.PLAYERS.findByID(playerID);
+	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
+		#all commands you can run
+		#generate score for player
+        if(msg == "/score"){
+			player.score = 9999999;
+        };
+		#teleport to a admin spot
+		if(msg == "/admin"){
+			if((bool) player.onTerrain == false){
+				player.position.x = 25;
+				player.position.y = 201;
+				player.position.z = 0;
+			}else if((bool) player.onTerrain == true){
+				GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+			}
+		}
+		#freeze game time
+		if (msg == "/freeze"){
+			GAME.TIME.freeze();
+		};
+		#unfreeze game time
+		if (msg == "/unfreeze"){
+			GAME.TIME.unfreeze();
+        };
+		#list commands you can do
+		if (msg == "/help"){
+			GAME.CHAT.send(playerID, "Press H on your keyboard", "#8fbabc");
+        };
+		#heal health to 100
+		if (msg == "/heal"){
+  			player.health = 100;
+        };
+		#change teams to survivor
+		if (msg == "/survivor"){
+			player.team = 1;
+        };
+		#change team to infected
+		if (msg == "/infected"){
+			player.team = 2;
+        };	
+		#whatever im currently testing
+		if (msg == "/test"){
+			GAME.TRIGGERS.execute(1);
+        };	
+		#summon a block at your location
+		if (msg == "/block"){
+			cube = GAME.SCENE.addCube("", "#8fbabc", 0, -100, 0, 1, 1, 1);
+			cube.position.x = player.position.x;
+			cube.position.y = player.position.y;
+			cube.position.z = player.position.z;
+        };	
+
+#GAME.SCENE.addAsset("", player.position.x, player.position.y, player.position.z, 1, "#f8fbabc", data, onLoadCallBack)
+
+	}
+}
