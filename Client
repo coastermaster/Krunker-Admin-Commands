@@ -1,0 +1,50 @@
+bool helpMenu = false;
+
+public action onKeyPress(str key, num code) {
+	if (code == 39) {  #right arrow
+		GAME.NETWORK.send("move","+z");
+	} else if (code == 37) { #left arrow
+		GAME.NETWORK.send("move","-z");
+	} else if (code == 38) { #up arrow
+		GAME.NETWORK.send("move","+x");
+	} else if (code == 40) { #down arrow
+		GAME.NETWORK.send("move","-x");
+	} else if (code == 189) { #minus sign
+		GAME.NETWORK.send("move","-y");
+	} else if (code == 187) { #plus sign
+		GAME.NETWORK.send("move","+y");
+	} else if (code == 72) { #H
+		GAME.NETWORK.send("move","H");
+	}
+}
+
+public action onNetworkMessage(str playerID, obj data) {
+  str message = toStr data;
+	if (message == "Toggle") {
+		if (helpMenu == false){
+			helpMenu = true;
+		} else {
+			helpMenu = false;
+		}
+	}
+}
+
+public action render(num delta) {
+	num state = 0;
+	if(helpMenu == true){
+		state = 1;
+	} else {
+		state = 0;
+	}
+	GAME.OVERLAY.drawRect(125, 450, 200, 500, 0, "#000000", state, true);
+	GAME.OVERLAY.drawText("Commands:", 125, 250, 0, 20, "center", "#FFFFFF", state);
+	GAME.OVERLAY.drawRect(125, 270, 150, 5, 0, "#FFFFFF", state, true);
+	GAME.OVERLAY.drawText("/score", 125, 300, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/admin", 125, 350, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/freeze", 125, 400, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/unfreeze", 125, 450, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/help", 125, 500, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/heal", 125, 550, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/survivor", 125, 600, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/infected", 125, 650, 0, 20, "center", "#8FBABC", state);
+}
