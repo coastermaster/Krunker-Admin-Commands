@@ -10,9 +10,7 @@ Down Arrow - Teleport down 10 units
 
 Commands:
 /score - gives the player 9999999 score
-*
 /admin - teleports player to set location
-*
 /freeze - stops game time
 /unfreeze - starts game time
 /help - tells you to press H
