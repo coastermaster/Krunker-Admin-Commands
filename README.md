@@ -16,7 +16,7 @@ Commands:
 /help - tells you to press H
 /heal - heals to 100 hp
 /survivor - swaps team to survivor (made for zombie gamemode)
-/infected - swaps team to infected (made for zombie gamemode)
+* /infected - swaps team to infected (made for zombie gamemode)
 
 
 Credit to: Coasterm77, Timmytheman123, and abwlol
