@@ -19,7 +19,4 @@ Commands:
 /infected - swaps team to infected (made for zombie gamemode)
 
 
-Credit to:
-Coasterm77
-Timmytheman123
-abwlol
+Credit to: Coasterm77, Timmytheman123, and abwlol
