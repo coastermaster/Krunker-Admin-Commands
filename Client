@@ -36,15 +36,15 @@ public action render(num delta) {
 	} else {
 		state = 0;
 	}
-	GAME.OVERLAY.drawRect(125, 450, 200, 500, 0, "#000000", state, true);
-	GAME.OVERLAY.drawText("Commands:", 125, 250, 0, 20, "center", "#FFFFFF", state);
-	GAME.OVERLAY.drawRect(125, 270, 150, 5, 0, "#FFFFFF", state, true);
-	GAME.OVERLAY.drawText("/score", 125, 300, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/admin", 125, 350, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/freeze", 125, 400, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/unfreeze", 125, 450, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/help", 125, 500, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/heal", 125, 550, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/survivor", 125, 600, 0, 20, "center", "#8FBABC", state);
-	GAME.OVERLAY.drawText("/infected", 125, 650, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawRect(225, 450, 400, 500, 0, "#000000", state, true);
+	GAME.OVERLAY.drawText("Commands:", 225, 250, 0, 20, "center", "#FFFFFF", state);
+	GAME.OVERLAY.drawRect(225, 270, 150, 5, 0, "#FFFFFF", state, true);
+	GAME.OVERLAY.drawText("/score", 225, 300, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/admin", 225, 350, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/time", 225, 400, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/heal", 225, 450, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/teleport username", 225, 500, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/kick username", 225, 550, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/freeze username", 225, 600, 0, 20, "center", "#8FBABC", state);
+	GAME.OVERLAY.drawText("/unfreeze username", 225, 650, 0, 20, "center", "#8FBABC", state);
 }
