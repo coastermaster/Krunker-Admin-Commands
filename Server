@@ -1,6 +1,117 @@
 obj cube = {};
-bool healenabled = false;
+bool heal = false;
+bool time = false;
 obj playerbackup = {};
+obj player1 = {};
+obj player2 = {};
+obj player3 = {};
+obj player4 = {};
+obj player5 = {};
+obj player6 = {};
+obj player7 = {};
+obj player8 = {};
+obj player9 = {};
+obj player10 = {};
+obj player11 = {};
+obj player12 = {};
+obj player13 = {};
+obj player14 = {};
+obj player15 = {};
+obj player16 = {};
+obj player17 = {};
+obj player18 = {};
+obj player19 = {};
+obj player20 = {};
+str player1Id = "";
+str player2Id = "";
+str player3Id = "";
+str player4Id = "";
+str player5Id = "";
+str player6Id = "";
+str player7Id = "";
+str player8Id = "";
+str player9Id = "";
+str player10Id = "";
+str player11Id = "";
+str player12Id = "";
+str player13Id = "";
+str player14Id = "";
+str player15Id = "";
+str player16Id = "";
+str player17Id = "";
+str player18Id = "";
+str player19Id = "";
+str player20Id = "";
+str kickName = "";
+str teleportName = "";
+str freezeName = "";
+str unfreezeName = "";
+
+public action onPlayerSpawn(str id) {
+	obj playerstore = GAME.PLAYERS.findByID(id);
+	if (toStr playerstore != "" ){
+		player1 = playerstore;
+		player1Id = id;
+	} else if (toStr player1 != "" ){
+		player2 = playerstore;
+		player2Id = id;
+	} else if (toStr player2 != "" ){
+		player3 = playerstore;
+		player3Id = id;
+	} else if (toStr player3 != "" ){
+		player4 = playerstore;
+		player4Id = id;
+	} else if (toStr player4 != "" ){
+		player5 = playerstore;
+		player5Id = id;
+	} else if (toStr player5 != "" ){
+		player6 = playerstore;
+		player6Id = id;
+	} else if (toStr player6 != "" ){
+		player7 = playerstore;
+		player7Id = id;
+	} else if (toStr player7 != "" ){
+		player8 = playerstore;
+		player8Id = id;
+	} else if (toStr player8 != "" ){
+		player9 = playerstore;
+		player9Id = id;
+	} else if (toStr player9 != "" ){
+		player10 = playerstore;
+		player10Id = id;
+	} else if (toStr player10 != "" ){
+		player11 = playerstore;
+		player11Id = id;
+	} else if (toStr player11 != "" ){
+		player12 = playerstore;
+		player12Id = id;
+	} else if (toStr player12 != "" ){
+		player13 = playerstore;
+		player13Id = id;
+	} else if (toStr player13 != "" ){
+		player14 = playerstore;
+		player14Id = id;
+	} else if (toStr player14 != "" ){
+		player15 = playerstore;
+		player15Id = id;
+	} else if (toStr player15 != "" ){
+		player16 = playerstore;
+		player16Id = id;
+	}else if (toStr player16 != "" ){
+		player17 = playerstore;
+		player17Id = id;
+	}else if (toStr player17 != "" ){
+		player18 = playerstore;
+		player18Id = id;
+	}else if (toStr player18 != "" ){
+		player19 = playerstore;
+		player19Id = id;
+	}else if (toStr player19 != "" ){
+		player20 = playerstore;
+		player20Id = id;
+	}
+}
+
 public action onNetworkMessage(str id, obj data, str playerID) {
 	str message = toStr data;
 	obj playerName = GAME.PLAYERS.findByID(playerID);
@@ -22,17 +133,18 @@ public action onNetworkMessage(str id, obj data, str playerID) {
 			GAME.NETWORK.send("move","Toggle", playerID);
 		}
 	}
-}
+}	
+
 #happens when someone chats
 public action onChatMessage(str msg, str playerID){
 	#check username for whitelist
-    obj player = GAME.PLAYERS.findByID(playerID);
+	obj player = GAME.PLAYERS.findByID(playerID);
 	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
 		#all commands you can run
-		#generate score for player
-        if(msg == "/score"){
+			#generate score for player
+		if(msg == "/score"){
 			player.score = 9999999;
-        };
+		};
 		#teleport to a admin spot
 		if(msg == "/admin"){
 			if((bool) player.onTerrain == false){
@@ -44,42 +156,332 @@ public action onChatMessage(str msg, str playerID){
 			}
 		}
 		#freeze game time
-		if (msg == "/freeze"){
-			GAME.TIME.freeze();
+		if (msg == "/time"){
+			if (time == false){
+				GAME.TIME.freeze();
+				time = true;
+			} else {
+				GAME.TIME.unfreeze();
+				time = false;
+			}
+			
 		};
-		#unfreeze game time
-		if (msg == "/unfreeze"){
-			GAME.TIME.unfreeze();
-        };
 		#list commands you can do
 		if (msg == "/help"){
 			GAME.CHAT.send(playerID, "Press H on your keyboard", "#8fbabc");
-        };
+		};
 		#heal health to 100
 		if (msg == "/heal"){
-  			player.health = 100;
-        };
-		#change teams to survivor
-		if (msg == "/survivor"){
-			player.team = 1;
-        };
-		#change team to infected
-		if (msg == "/infected"){
-			player.team = 2;
-        };	
-		#whatever im currently testing
-		if (msg == "/test"){
-			GAME.TRIGGERS.execute(1);
-        };	
-		#summon a block at your location
-		if (msg == "/block"){
-			cube = GAME.SCENE.addCube("", "#8fbabc", 0, -100, 0, 1, 1, 1);
-			cube.position.x = player.position.x;
-			cube.position.y = player.position.y;
-			cube.position.z = player.position.z;
-        };	
+			if (heal == false){
+				heal = true;
+			} else {
+				heal = false;
+			}
+		};
+		if (UTILS.textContains(msg, "/teleport ")){
+			teleportName = UTILS.replaceText(msg, "/teleport ", "");
+			if (toStr player1.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player1.position.x;
+					player.position.y = player1.position.y;
+					player.position.z = player1.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player2.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player2.position.x;
+					player.position.y = player2.position.y;
+					player.position.z = player2.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player3.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player3.position.x;
+					player.position.y = player3.position.y;
+					player.position.z = player3.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player4.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player4.position.x;
+					player.position.y = player4.position.y;
+					player.position.z = player4.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player5.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player5.position.x;
+					player.position.y = player5.position.y;
+					player.position.z = player5.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player6.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player6.position.x;
+					player.position.y = player6.position.y;
+					player.position.z = player6.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player7.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player7.position.x;
+					player.position.y = player7.position.y;
+					player.position.z = player7.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player8.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player8.position.x;
+					player.position.y = player8.position.y;
+					player.position.z = player8.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player9.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player9.position.x;
+					player.position.y = player9.position.y;
+					player.position.z = player9.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player10.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player10.position.x;
+					player.position.y = player10.position.y;
+					player.position.z = player10.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player11.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player11.position.x;
+					player.position.y = player11.position.y;
+					player.position.z = player11.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player12.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player12.position.x;
+					player.position.y = player12.position.y;
+					player.position.z = player12.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player13.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player13.position.x;
+					player.position.y = player13.position.y;
+					player.position.z = player13.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player14.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player14.position.x;
+					player.position.y = player14.position.y;
+					player.position.z = player14.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player15.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player15.position.x;
+					player.position.y = player15.position.y;
+					player.position.z = player15.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player16.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player16.position.x;
+					player.position.y = player16.position.y;
+					player.position.z = player16.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player17.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player17.position.x;
+					player.position.y = player17.position.y;
+					player.position.z = player17.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player18.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player18.position.x;
+					player.position.y = player18.position.y;
+					player.position.z = player18.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player19.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player19.position.x;
+					player.position.y = player19.position.y;
+					player.position.z = player19.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			} else if(toStr player20.username == teleportName){
+				if((bool) player.onTerrain == false){
+					player.position.x = player20.position.x;
+					player.position.y = player20.position.y;
+					player.position.z = player20.position.z;
+				}else if((bool) player.onTerrain == true){
+					GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/kick ")){
+			kickName = UTILS.replaceText(msg, "/kick ", "");
+			if (toStr player1.username == kickName){
+				GAME.ADMIN.kick(player1Id);
+			} else if(toStr player2.username == kickName){
+				GAME.ADMIN.kick(player2Id);
+			} else if(toStr player3.username == kickName){
+				GAME.ADMIN.kick(player3Id);
+			} else if(toStr player4.username == kickName){
+				GAME.ADMIN.kick(player4Id);
+			} else if(toStr player5.username == kickName){
+				GAME.ADMIN.kick(player5Id);
+			} else if(toStr player6.username == kickName){
+				GAME.ADMIN.kick(player6Id);
+			} else if(toStr player7.username == kickName){
+				GAME.ADMIN.kick(player7Id);
+			} else if(toStr player8.username == kickName){
+				GAME.ADMIN.kick(player8Id);
+			} else if(toStr player9.username == kickName){
+				GAME.ADMIN.kick(player9Id);
+			} else if(toStr player10.username == kickName){
+				GAME.ADMIN.kick(player10Id);
+			} else if(toStr player11.username == kickName){
+				GAME.ADMIN.kick(player11Id);
+			} else if(toStr player12.username == kickName){
+				GAME.ADMIN.kick(player12Id);
+			} else if(toStr player13.username == kickName){
+				GAME.ADMIN.kick(player13Id);
+			} else if(toStr player14.username == kickName){
+				GAME.ADMIN.kick(player14Id);
+			} else if(toStr player15.username == kickName){
+				GAME.ADMIN.kick(player15Id);
+			} else if(toStr player16.username == kickName){
+				GAME.ADMIN.kick(player16Id);
+			} else if(toStr player17.username == kickName){
+				GAME.ADMIN.kick(player17Id);
+			} else if(toStr player18.username == kickName){
+				GAME.ADMIN.kick(player18Id);
+			} else if(toStr player19.username == kickName){
+				GAME.ADMIN.kick(player19Id);
+			} else if(toStr player20.username == kickName){
+				GAME.ADMIN.kick(player20Id);
+			}
+		}
+		if (UTILS.textContains(msg, "/freeze ")){
+			freezeName = UTILS.replaceText(msg, "/freeze ", "");
+			if (toStr player1.username == freezeName){
+				player1.defaultMovement = false;
+			} else if(toStr player2.username == freezeName){
+				player2.defaultMovement = false;
+			} else if(toStr player3.username == freezeName){
+				player3.defaultMovement = false;
+			} else if(toStr player4.username == freezeName){
+				player4.defaultMovement = false;
+			} else if(toStr player5.username == freezeName){
+				player5.defaultMovement = false;
+			} else if(toStr player6.username == freezeName){
+				player6.defaultMovement = false;
+			} else if(toStr player7.username == freezeName){
+				player7.defaultMovement = false;
+			} else if(toStr player8.username == freezeName){
+				player8.defaultMovement = false;
+			} else if(toStr player9.username == freezeName){
+				player9.defaultMovement = false;
+			} else if(toStr player10.username == freezeName){
+				player10.defaultMovement = false;
+			} else if(toStr player11.username == freezeName){
+				player11.defaultMovement = false;
+			} else if(toStr player12.username == freezeName){
+				player12.defaultMovement = false;
+			} else if(toStr player13.username == freezeName){
+				player13.defaultMovement = false;
+			} else if(toStr player14.username == freezeName){
+				player14.defaultMovement = false;
+			} else if(toStr player15.username == freezeName){
+				player15.defaultMovement = false;
+			} else if(toStr player16.username == freezeName){
+				player16.defaultMovement = false;
+			} else if(toStr player17.username == freezeName){
+				player17.defaultMovement = false;
+			} else if(toStr player18.username == freezeName){
+				player18.defaultMovement = false;
+			} else if(toStr player19.username == freezeName){
+				player19.defaultMovement = false;
+			} else if(toStr player20.username == freezeName){
+				player20.defaultMovement = false;
+			}
+		}
+		if (UTILS.textContains(msg, "/unfreeze ")){
+			unfreezeName = UTILS.replaceText(msg, "/unfreeze ", "");
+			if (toStr player1.username == unfreezeName){
+				player1.defaultMovement = true;
+			} else if(toStr player2.username == unfreezeName){
+				player2.defaultMovement = true;
+			} else if(toStr player3.username == unfreezeName){
+				player3.defaultMovement = true;
+			} else if(toStr player4.username == unfreezeName){
+				player4.defaultMovement = true;
+			} else if(toStr player5.username == unfreezeName){
+				player5.defaultMovement = true;
+			} else if(toStr player6.username == unfreezeName){
+				player6.defaultMovement = true;
+			} else if(toStr player7.username == unfreezeName){
+				player7.defaultMovement = true;
+			} else if(toStr player8.username == unfreezeName){
+				player8.defaultMovement = true;
+			} else if(toStr player9.username == unfreezeName){
+				player9.defaultMovement = true;
+			} else if(toStr player10.username == unfreezeName){
+				player10.defaultMovement = true;
+			} else if(toStr player11.username == unfreezeName){
+				player11.defaultMovement = true;
+			} else if(toStr player12.username == unfreezeName){
+				player12.defaultMovement = true;
+			} else if(toStr player13.username == unfreezeName){
+				player13.defaultMovement = true;
+			} else if(toStr player14.username == unfreezeName){
+				player14.defaultMovement = true;
+			} else if(toStr player15.username == unfreezeName){
+				player15.defaultMovement = true;
+			} else if(toStr player16.username == unfreezeName){
+				player16.defaultMovement = true;
+			} else if(toStr player17.username == unfreezeName){
+				player17.defaultMovement = true;
+			} else if(toStr player18.username == unfreezeName){
+				player18.defaultMovement = true;
+			} else if(toStr player19.username == unfreezeName){
+				player19.defaultMovement = true;
+			} else if(toStr player20.username == unfreezeName){
+				player20.defaultMovement = true;
+			}
+		}
+	}
+}
 
-#GAME.SCENE.addAsset("", player.position.x, player.position.y, player.position.z, 1, "#f8fbabc", data, onLoadCallBack)
-
+public action onPlayerDamage(str playerID, str doerID, num damage){
+	obj player = GAME.PLAYERS.findByID(playerID);
+	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
+		if (heal == true){
+			(num) player.health += damage;
+		}
 	}
 }
