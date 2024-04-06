@@ -135,17 +135,12 @@ public action onNetworkMessage(str id, obj data, str playerID) {
 	}
 }	
 
-#happens when someone chats
 public action onChatMessage(str msg, str playerID){
-	#check username for whitelist
 	obj player = GAME.PLAYERS.findByID(playerID);
 	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
-		#all commands you can run
-			#generate score for player
 		if(msg == "/score"){
 			player.score = 9999999;
 		};
-		#teleport to a admin spot
 		if(msg == "/admin"){
 			if((bool) player.onTerrain == false){
 				player.position.x = 25;
@@ -155,7 +150,6 @@ public action onChatMessage(str msg, str playerID){
 				GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
 			}
 		}
-		#freeze game time
 		if (msg == "/time"){
 			if (time == false){
 				GAME.TIME.freeze();
@@ -166,11 +160,6 @@ public action onChatMessage(str msg, str playerID){
 			}
 			
 		};
-		#list commands you can do
-		if (msg == "/help"){
-			GAME.CHAT.send(playerID, "Press H on your keyboard", "#8fbabc");
-		};
-		#heal health to 100
 		if (msg == "/heal"){
 			if (heal == false){
 				heal = true;
