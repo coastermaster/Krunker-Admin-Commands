@@ -1,4 +1,6 @@
-Copy and paste the code into scripting in krunker editor to use.
+Copy and paste the code into scripting in krunker editor to use. Replace the username coasterm77 and timmytheman123 to you username. And set the admin location (x,y,z).
+
+This will get updated whenever I feel I made a big change in the code.
 
 Keypress:
 * Plus - Teleport up 10 units
@@ -7,16 +9,17 @@ Keypress:
 * Right Arrow - Teleport right 10 units
 * Up Arrow - Teleport up 10 units
 * Down Arrow - Teleport down 10 units
+* H - Brings up a help menu that show commands
 
 Commands:
 * /score - gives the player 9999999 score
 * /admin - teleports player to set location
-* /freeze - stops game time
-* /unfreeze - starts game time
-* /help - tells you to press H
-* /heal - heals to 100 hp
-* /survivor - swaps team to survivor (made for zombie gamemode)
-* /infected - swaps team to infected (made for zombie gamemode)
+* /time - toggles wether the time is started or stopped
+* /heal - toggles wether you take damage or not (one shot still kils)
+* /teleport username - teleport player to target player (replace username with target players username)
+* /kick username - kicks the target player (replace username with target players username)
+* /freeze username - freezes target player in place (replace username with target players username)
+* /unfreeze username - unfreezes frozen target player (replace username with target players username)
 
 
 Credit to: Coasterm77, Timmytheman123, and abwlol
