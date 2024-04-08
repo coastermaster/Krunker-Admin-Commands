@@ -14,8 +14,8 @@ Keypress:
 Commands:
 * /score - gives the player 9999999 score
 * /admin - teleports player to set location
-* /time - toggles wether the time is started or stopped
-* /heal - toggles wether you take damage or not (one shot still kils)
+* /time - toggles whether the time is started or stopped
+* /heal - toggles whether you take damage or not (one shot still kils)
 * /teleport username - teleport player to target player (replace username with target players username)
 * /kick username - kicks the target player (replace username with target players username)
 * /freeze username - freezes target player in place (replace username with target players username)
