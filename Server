@@ -6,7 +6,7 @@ str targetPlayerId = "";
 str Name = ""; 
 str[] playerIdList = str["a"];
 str[] classList = str["triggerman", "hunter", "run n gun", "spray n pray", "vinc", "detective", "marksman", "rocketeer", "agent", "runner", "deagler", "bowman", "commando", "trooper", "not real at all", "infiltrator"];
-
+str[] opList = str["timmytheman123", "coasterm77"];
 
 public action onPlayerSpawn(str id) {
 	obj playerstore = GAME.PLAYERS.findByID(id);
@@ -25,30 +25,32 @@ public action onPlayerSpawn(str id) {
 
 public action onNetworkMessage(str id, obj data, str playerID) {
 	str message = toStr data;
-	obj playerName = GAME.PLAYERS.findByID(playerID);
-	str playerNameStr = toStr playerName.username;
-	if (playerNameStr == "timmytheman123" || playerNameStr == "coasterm77"){
+	obj player = GAME.PLAYERS.findByID(playerID);
+	for (num i = 0; i < lengthOf opList; i++) {
+	if (toStr player.username == opList[i]){
 		if (message == "-z") {
-			(num) playerName.position.z -= 30;
+			(num) player.position.z -= 30;
 		} else if (message == "-x"){
-			(num) playerName.position.x -= 30;
+			(num) player.position.x -= 30;
 		} else if (message == "+z"){
-			(num) playerName.position.z += 30;
+			(num) player.position.z += 30;
 		} else if (message == "+x"){
-			(num) playerName.position.x += 30;
+			(num) player.position.x += 30;
 		} else if (message == "+y"){
-			(num) playerName.position.y += 60;
+			(num) player.position.y += 60;
 		} else if (message == "-y"){
-			(num) playerName.position.y -= 10;
+			(num) player.position.y -= 10;
 		} else if (message == "H"){
 			GAME.NETWORK.send("move","Toggle", playerID);
 		}
+	}
 	}
 }	
 
 public action onChatMessage(str msg, str playerID){
 	obj player = GAME.PLAYERS.findByID(playerID);
-	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
+	for (num i = 0; i < lengthOf playerIdList; i++) {
+	if(toStr player.username == opList[i]){
 		if(msg == "/score"){
 			player.score = 9999999;
 		};
@@ -85,6 +87,11 @@ public action onChatMessage(str msg, str playerID){
 					player.classIndex = i;
 				}
 			}
+		}
+		if (UTILS.textContains(msg, "/op ")){
+			Name = UTILS.replaceText(msg, "/op ", "");
+			GAME.CHAT.broadcast(toStr player.classIndex, '#8fbabc');
+			addTo opList Name;
 		}
 		if (UTILS.textContains(msg, "/teleport ")){
 			Name = UTILS.replaceText(msg, "/teleport ", "");
@@ -167,17 +174,21 @@ public action onChatMessage(str msg, str playerID){
 				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
 				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
 					GAME.CHAT.broadcast("tested " + toStr targetPlayer.id, "#8fbabce");
+					GAME.log(targetPlayer);
 				}
 			}
 		}	
+	}
 	}
 }
 
 public action onPlayerDamage(str playerID, str doerID, num damage){
 	obj player = GAME.PLAYERS.findByID(playerID);
-	if(toStr player.username == "timmytheman123" || toStr player.username == "coasterm77"){
+	for (num i = 0; i < lengthOf playerIdList; i++) {
+	if(toStr player.username == opList[i]){
 		if (heal == true){
 			(num) player.health += damage;
 		}
+	}
 	}
 }
