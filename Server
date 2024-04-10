@@ -41,7 +41,9 @@ public action onNetworkMessage(str id, obj data, str playerID) {
 		} else if (message == "-y"){
 			(num) player.position.y -= 10;
 		} else if (message == "H"){
-			GAME.NETWORK.send("move","Toggle", playerID);
+			GAME.NETWORK.send("move","helpToggle", playerID);
+		} else if (message == "`"){
+			GAME.NETWORK.send("move", 'Toggle', playerID);
 		}
 	}
 	}
