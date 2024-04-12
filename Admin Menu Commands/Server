@@ -1,1 +1,199 @@
+bool heal = false;
+bool time = false;
+bool exists = false;
+obj targetPlayer = {};
+str targetPlayerId = "";
+str Name = ""; 
+str[] playerIdList = str["a"];
+str[] classList = str["Triggerman", "Hunter", "Run n Gun", "Spray n Pray", "Vince", "Detective", "Marksman", "Rocketeer", "Agent", "Runner", "Deagler", "Bowman", "Commando", "Trooper", "Survivor", "Infiltrator"];
+str[] opList = str["timmytheman123", "coasterm77"];
 
+public action onPlayerSpawn(str id) {
+	obj playerstore = GAME.PLAYERS.findByID(id);
+	for (num i = 0; i < lengthOf playerIdList; i++) {
+		targetPlayerId = playerIdList[i];
+		if (toStr targetPlayerId == id){
+			exists = true;
+		}else if (toStr targetPlayerId != id){
+			exists = false;
+		}
+	}
+	if (exists == false){
+		addTo playerIdList id;
+	}
+}
+
+public action onPlayerLeave(str id) {
+    for (num i = 0; i < lengthOf playerIdList; i++) {
+		targetPlayerId = playerIdList[i];
+		if (toStr targetPlayerId == id){
+			exists = true;
+		}else if (toStr targetPlayerId != id){
+			exists = false;
+		}
+		if (exists == true){
+			remove playerIdList[i];
+		}
+	}
+	
+}
+
+public action onNetworkMessage(str id, obj data, str playerID) {
+	str msg = toStr data;
+	obj player = GAME.PLAYERS.findByID(playerID);
+	for (num i = 0; i < lengthOf opList; i++) {
+	if (toStr player.username == opList[i]){
+		if (msg == "-z") {
+			(num) player.position.z -= 30;
+		} else if (msg == "-x"){
+			(num) player.position.x -= 30;
+		} else if (msg == "+z"){
+			(num) player.position.z += 30;
+		} else if (msg == "+x"){
+			(num) player.position.x += 30;
+		} else if (msg == "+y"){
+			(num) player.position.y += 60;
+		} else if (msg == "-y"){
+			(num) player.position.y -= 10;
+		} else if (msg == "P"){
+			GAME.NETWORK.send("move", "Toggle", playerID);
+		} else if(msg == "/score"){
+			player.score = 9999999;
+		};
+		if(msg == "/admin"){
+			if((bool) player.onTerrain == false){
+				player.position.x = 25;
+				player.position.y = 201;
+				player.position.z = 0;
+			}else if((bool) player.onTerrain == true){
+				GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+			}
+		}
+		if (msg == "/time"){
+			if (time == false){
+				GAME.TIME.freeze();
+				time = true;
+			} else {
+				GAME.TIME.unfreeze();
+				time = false;
+			}
+			
+		};
+		if (msg == "/heal"){
+			if (toStr player.heal == "0"){
+				player.heal = "1";
+			} else {
+				player.heal = "0";
+			}
+		}
+		if (UTILS.textContains(msg, "/class ")){
+			Name = UTILS.replaceText(msg, "/class ", "");
+			for (num i = 0; i < lengthOf classList; i++) {
+				if (UTILS.toLower(toStr classList[i]) == UTILS.toLower(Name)){
+					player.classIndex = i;
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/op ")){
+			Name = UTILS.replaceText(msg, "/op ", "");
+			GAME.CHAT.broadcast(toStr player.classIndex, '#8fbabc');
+			addTo opList Name;
+		}
+		if (UTILS.textContains(msg, "/teleport ")){
+			Name = UTILS.replaceText(msg, "/teleport ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					if((bool) player.onTerrain == false){
+						player.position.x = targetPlayer.position.x;
+						player.position.y = targetPlayer.position.y;
+						player.position.z = targetPlayer.position.z;
+					}else if((bool) player.onTerrain == true){
+						GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+					}
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/bring ")){
+			Name = UTILS.replaceText(msg, "/bring ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					if((bool) player.onTerrain == false){
+						targetPlayer.position.x = player.position.x;
+						targetPlayer.position.y = player.position.y;
+						targetPlayer.position.z = player.position.z;
+					}else if((bool) player.onTerrain == true){
+						GAME.CHAT.send(playerID, "Get off terrain", "#8fbabc");
+					}
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/kick ")){
+			Name = UTILS.replaceText(msg, "/kick ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					GAME.ADMIN.kick(targetPlayer.id);
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/freeze ")){
+			Name = UTILS.replaceText(msg, "/freeze ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					targetPlayer.defaultMovement = false;
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/unfreeze ")){
+			Name = UTILS.replaceText(msg, "/unfreeze ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					targetPlayer.defaultMovement = true;
+				}
+			}
+		}
+		if (UTILS.textContains(msg, "/kill ")){
+			Name = UTILS.replaceText(msg, "/kill ", "");
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					(num) targetPlayer.health -= 999999999;
+				}
+			}
+		}	
+		if (UTILS.textContains(msg, "/test ")){
+			Name = UTILS.replaceText(msg, "/test ", "");
+			GAME.CHAT.broadcast(toStr player.classIndex, '#8fbabc');
+			player.classIndex = Name;
+			for (num i = 0; i < lengthOf playerIdList; i++) {
+				targetPlayerId = playerIdList[i];
+				targetPlayer = GAME.PLAYERS.findByID(targetPlayerId);
+				if (UTILS.toLower(toStr targetPlayer.username) == UTILS.toLower(Name)){
+					GAME.CHAT.broadcast("tested " + toStr targetPlayer.id, "#8fbabce");
+					GAME.log(targetPlayer);
+				}
+			}
+		}
+	}
+	}
+}	
+public action onPlayerDamage(str playerID, str doerID, num damage){
+	obj player = GAME.PLAYERS.findByID(playerID);
+	for (num i = 0; i < lengthOf playerIdList; i++) {
+	if(toStr player.username == opList[i]){
+		if (toStr player.heal == "1"){
+			(num) player.health += damage;
+		}
+	}
+	}
+}
