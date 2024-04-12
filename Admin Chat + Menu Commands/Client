@@ -1,1 +1,166 @@
+bool helpMenu = false;
+bool adminMenu = false;
+bool exists = false;
+obj targetPlayer = {};
+num classTypeProgress = 1;
+num playerIdListProgress = 1;
+str targetPlayerId = "";
+str classType = "Triggerman";
+str[] playerIdList = str["a"];
+str[] classList = str["Triggerman", "Hunter", "Run n Gun", "Spray n Pray", "Vince", "Detective", "Marksman", "Rocketeer", "Agent", "Runner", "Deagler", "Bowman", "Commando", "Trooper", "Survivor", "Infiltrator"];
 
+public action onPlayerSpawn(str id) {
+	obj playerstore = GAME.PLAYERS.findByID(id);
+	for (num i = 0; i < lengthOf playerIdList; i++) {
+		targetPlayerId = playerIdList[i];
+		if (toStr targetPlayerId == id){
+			exists = true;
+		}else if (toStr targetPlayerId != id){
+			exists = false;
+		}
+	}
+	if (exists == false){
+		addTo playerIdList id;
+	}
+}
+
+public action onPlayerLeave(str id) {
+    for (num i = 0; i < lengthOf playerIdList; i++) {
+		targetPlayerId = playerIdList[i];
+		if (toStr targetPlayerId == id){
+			exists = true;
+		}else if (toStr targetPlayerId != id){
+			exists = false;
+		}
+		if (exists == true){
+			remove playerIdList[i];
+		}
+	}
+	
+}
+
+public action onKeyPress(str key, num code) {
+	if (code == 39) {  #right arrow
+		GAME.NETWORK.send("move","+z");
+	} else if (code == 37) { #left arrow
+		GAME.NETWORK.send("move","-z");
+	} else if (code == 38) { #up arrow
+		GAME.NETWORK.send("move","+x");
+	} else if (code == 40) { #down arrow
+		GAME.NETWORK.send("move","-x");
+	} else if (code == 189) { #minus sign
+		GAME.NETWORK.send("move","-y");
+	} else if (code == 187) { #plus sign
+		GAME.NETWORK.send("move","+y");
+	}else if (code == 80) {
+		GAME.NETWORK.send("move", "P");
+	}
+}
+
+public action onMouseClick(num button, num x, num y) {
+	if (button == 2){
+		GAME.NETWORK.send("move", "P");
+	}
+}
+
+action toggleHelp(){
+	if (adminMenu == false){
+			adminMenu = true;
+			GAME.UI.updateDIV("massiveDiv", "visibility", "visible");
+			GAME.INPUTS.unlockMouse();
+		} else {
+			adminMenu = false;
+			GAME.UI.updateDIV("massiveDiv", "visibility", "hidden");
+			GAME.INPUTS.lockMouse();
+		}
+}
+
+public action onNetworkMessage(str playerID, obj data) {
+	str message = toStr data;
+	obj player = GAME.PLAYERS.findByID(playerID);
+	if (message == "Toggle") {
+		toggleHelp();
+	}
+}
+
+
+
+public action start(){
+	str massiveDiv = GAME.UI.addDIV("massiveDiv",true,"width:1000000px;height:1000000px;visibility: hidden;background-color: transparent;");
+	str bigDiv = GAME.UI.addDIV("bigDiv",true,"color: #0c9aa1; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 10px;border-radius: 100px;width:1050px;height:530px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 50%;left: 50%;", "massiveDiv");
+	str player = GAME.UI.addDIV("player", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:400px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 170px;left: 725px;", "bigDiv");
+	str score = GAME.UI.addDIV("score", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 170px;left: 125px;", "bigDiv");
+	str admin = GAME.UI.addDIV("admin", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 300px;left: 125px;", "bigDiv");
+	str time = GAME.UI.addDIV("time", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 170px;left: 325px;", "bigDiv");
+	str heal = GAME.UI.addDIV("heal", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 300px;left: 325px;", "bigDiv");
+	str teleport = GAME.UI.addDIV("teleport", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 300px;left: 525px;", "bigDiv");
+	str bring = GAME.UI.addDIV("bring", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 430px;left: 525px;", "bigDiv");
+	str kick = GAME.UI.addDIV("kick", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 300px;left: 725px;", "bigDiv");
+	str freeze = GAME.UI.addDIV("freeze", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 430px;left: 725px;", "bigDiv");
+	str unfreeze = GAME.UI.addDIV("unfreeze", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 300px;left: 925px;", "bigDiv");
+	str kill = GAME.UI.addDIV("kill", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:150px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 430px;left: 925px;", "bigDiv");
+	str class = GAME.UI.addDIV("class", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:80px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(-50%, -50%);top: 430px;left: 360px;", "bigDiv");
+	str classtype = GAME.UI.addDIV("classtype", true, "display: grid; place-items: center; font-size: 20px; text-align: center; border-style: solid;border-color: #0c9aa1;border-width: 5px;border-radius: 20px;width:220px;height:80px;background-color:#8fbabc;position:absolute;transform: translate(0%, -50%);top: 430px;left: 50px;", "bigDiv");
+	str topbar = GAME.UI.addDIV("topbar", true, "width:100%;height:5px;background-color:#0c9aa1;position:absolute;transform: translate(-50%, -50%);top: 80px;left: 50%;", "bigDiv");
+	str bottombar = GAME.UI.addDIV("bottombar", true, "width:425px;height:5px;background-color:#0c9aa1;position:absolute;transform: translate(0%, -50%);top: 365px;left: 0px;", "bigDiv");
+	str middlebar = GAME.UI.addDIV("middlebar", true, "width:5px;height:460px;background-color:#0c9aa1;position:absolute;transform: translate(-50%, -50%);top: 310px;left: 425px;", "bigDiv");
+	GAME.UI.updateDIVText("score", "score");
+	GAME.UI.updateDIVText("score","Score");
+	GAME.UI.updateDIVText("admin","Admin");
+	GAME.UI.updateDIVText("time","Time");
+	GAME.UI.updateDIVText("heal","Heal");
+	GAME.UI.updateDIVText("teleport","Teleport");
+	GAME.UI.updateDIVText("bring","Bring");
+	GAME.UI.updateDIVText("kick","Kick");
+	GAME.UI.updateDIVText("freeze","Freeze");
+	GAME.UI.updateDIVText("unfreeze","Unfreeze");
+	GAME.UI.updateDIVText("kill","Kill");
+	GAME.UI.updateDIVText("class","Class");
+	GAME.UI.updateDIVText("classtype", classType);
+	targetPlayer = GAME.PLAYERS.findByID(playerIdList[1]);
+	GAME.UI.updateDIVText("player", toStr targetPlayer.username);
+}
+
+public action onDIVClicked(str id) {
+    if (id == "massiveDiv") {
+        toggleHelp();
+    } else if (id == "score") {
+        GAME.NETWORK.send("admin", "/score");
+    } else if (id == "admin") {
+        GAME.NETWORK.send("admin", "/admin");
+    } else if (id == "time") {
+        GAME.NETWORK.send("admin", "/time");
+    } else if (id == "heal") {
+        GAME.NETWORK.send("admin", "/heal");
+    } else if (id == "teleport") {
+        GAME.NETWORK.send("admin", "/teleport " + toStr targetPlayer.username);
+    } else if (id == "bring") {
+        GAME.NETWORK.send("admin", "/bring " + toStr targetPlayer.username);
+    } else if (id == "kick") {
+        GAME.NETWORK.send("admin", "/kick " + toStr targetPlayer.username);
+    } else if (id == "freeze") {
+        GAME.NETWORK.send("admin", "/freeze " + toStr targetPlayer.username);
+    } else if (id == "unfreeze") {
+        GAME.NETWORK.send("admin", "/unfreeze " + toStr targetPlayer.username);
+    } else if (id == "kill") {
+        GAME.NETWORK.send("admin", "/kill " + toStr targetPlayer.username);
+    } else if (id == "class") {
+		GAME.NETWORK.send("admin", "/class " + classType);
+	} else if (id == "classtype") {
+		if (classTypeProgress < lengthOf classList){
+			classTypeProgress += 1;
+		} else {
+			classTypeProgress = 0;
+		}
+		classType = classList[classTypeProgress];
+		GAME.UI.updateDIVText("classtype", classType);
+	} else if (id == "player"){
+		if (playerIdListProgress < lengthOf playerIdList){
+			playerIdListProgress += 1;
+		} else {
+			playerIdListProgress = 1;
+		}
+		targetPlayer =  GAME.PLAYERS.findByID(playerIdList[playerIdListProgress]);
+		GAME.UI.updateDIVText("player", toStr targetPlayer.username);
+	}
+}
